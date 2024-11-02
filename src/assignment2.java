@@ -47,13 +47,13 @@ public class assignment2 {
         int[] RST = new int[(int) n];
         String[] columns = { "Mins.", "Prob", "Cum. Prob", "Min range", "Max range" };
         String[] Final_columns = { "Customer", "IAT (mins)", "Arrival", "A Serv time", "Begin",
-                "End", "B Serv time","Begin", "End", "Wait",
-                "In Sys", "A Idle","B idle" };
+                "End", "B Serv time","Begin", "End", "Wait A",
+                "In Sys", "A Idle","B idle" ,"wait B"};
 
         double[][] IAT_table = new double[(int) random_arrive][5];
         double[][] ST_table1 = new double[(int) random_service1][5];
         double[][] ST_table2 = new double[(int) random_service2][5];
-        double[][] Final_table = new double[(int) n][13];
+        double[][] Final_table = new double[(int) n][14];
 
         for (int i = 0; i < n; i++) {
             RIAT[i] = (int) (Math.random() * 100 + 1);
@@ -225,17 +225,29 @@ public class assignment2 {
 
             }
         }
-        //idle claculator
-        for(int i = 0;i<n;i++){
-            if(n==i+1){
-                break;
-            }
-            Final_table[i][11]=Final_table[i][5]-Final_table[i+1][4];
-            if(Final_table[i][11]==Final_table[i][5]){
-                Final_table[i][11]=0;
-            }
 
-        }
+        //idle  and wait calculator
+        Final_table[0][11] = Final_table[0][4];
+        for(int i = 1;i<n;i++){
+            // begin A = 4, begin B= 7
+            // end A =5, end B= 8
+            // idle A =11, idle B= 12
+
+            //idle server A = begin[i]- end[i-1]
+            Final_table[i][11] = Math.max(Final_table[i][4] - Final_table[i-1][5], 0);
+
+            //idle server B
+            Final_table[i][12] = Math.max(Final_table[i][7] - Final_table[i-1][8], 0);
+            
+
+            //wait = begin - arrive
+            //wait a =9 wait b = 13
+            //arriavle=2
+            Final_table[i][9]=Math.max(Final_table[i][4]-Final_table[i][2],0);//wait A
+            Final_table[i][13]=Math.max(Final_table[i][7]-Final_table[i][2],0);// wait B
+
+            
+         }
 
         System.out.println();
         System.out.println("IAT table:");
@@ -251,7 +263,7 @@ public class assignment2 {
         System.out.println("Final table:");
         displayTable(Final_columns, Final_table);
         System.out.println();
-        System.out.println("Average Waiting Time: " + (sumWaiting / n));
+    
         System.out.println("Average Service Time for Able: " + (sumST1 / n));
         System.out.println("Average Service Time for Baker: " + (sumST2 / n));
 
