@@ -13,7 +13,7 @@ public class assignment2 {
         System.out.println();
 
         for (int i = 0; i < columnNames.length; i++) {
-            System.out.print("------------");
+            System.out.print("-----------");
         }
         System.out.println();
 
@@ -48,12 +48,12 @@ public class assignment2 {
         String[] columns = { "Mins.", "Prob", "Cum. Prob", "Min range", "Max range" };
         String[] Final_columns = { "Customer", "IAT (mins)", "Arrival", "A Serv time", "Begin",
                 "End", "B Serv time","Begin", "End", "Wait",
-                "In Sys", "Idle" };
+                "In Sys", "A Idle","B idle" };
 
         double[][] IAT_table = new double[(int) random_arrive][5];
         double[][] ST_table1 = new double[(int) random_service1][5];
         double[][] ST_table2 = new double[(int) random_service2][5];
-        double[][] Final_table = new double[(int) n][12];
+        double[][] Final_table = new double[(int) n][13];
 
         for (int i = 0; i < n; i++) {
             RIAT[i] = (int) (Math.random() * 100 + 1);
@@ -224,6 +224,17 @@ public class assignment2 {
                 }
 
             }
+        }
+        //idle claculator
+        for(int i = 0;i<n;i++){
+            if(n==i+1){
+                break;
+            }
+            Final_table[i][11]=Final_table[i][5]-Final_table[i+1][4];
+            if(Final_table[i][11]==Final_table[i][5]){
+                Final_table[i][11]=0;
+            }
+
         }
 
         System.out.println();
